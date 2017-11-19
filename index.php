@@ -1,6 +1,6 @@
 <?php
 
-//turn on debugging messages
+//Bug report
 ini_set('display_errors', 'On');
 error_reporting(E_ALL);
 
@@ -11,7 +11,107 @@ define('PASSWORD', 'AmCb81UGG');
 define('CONNECTION', 'sql1.njit.edu');
 
 
+class dbConn{
+    
+    protected static $db;
+    
+    public function __construct() {
+        
+        try {
+            
+            self::$db = new PDO( 'mysql:host=' . CONNECTION .';dbname=' . DATABASE, USERNAME, PASSWORD );
+            self::$db->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
+            echo 'Connected successfully<br>';
 
+        } catch (PDOException $e) {
+            
+            echo "Connection Error: " . $e->getMessage();
+
+        }
+
+    }
+    
+    public static function getConnection() {
+        
+        if (!self::$db) {
+            
+            new dbConn();
+
+        }
+        
+        return self::$db;
+
+    }
+}
+
+
+class collection {
+
+    static public function create() {
+
+        $model = new static::$modelName;
+        return $model;
+
+    }
+       
+    public  function findAll() {
+
+         $db = dbConn::getConnection();
+         $tableName = get_called_class();
+         $sql = 'SELECT * FROM ' . $tableName;
+         $statement = $db->prepare($sql);
+         $statement->execute();
+            
+         $class = static::$modelName;
+         $statement->setFetchMode(PDO::FETCH_CLASS, $class);
+        
+         $recordsSet =  $statement->fetchAll();
+         return $recordsSet;
+    
+    }
+}      
+   
+
+class accounts extends collection {
+
+    protected static $modelName='accounts';
+
+}
+
+
+class table {
+
+    static  function createTable($result) {
+        
+        echo '<table>';
+        echo "<table cellpadding='10px' border='2px' style='border-collapse:collapse' text-align :'center' width ='100%'white-space : nowrap'font-''weight:bold'>";
+            
+        foreach($result as $column) {
+            
+            echo '<tr>';
+            foreach($column as $row) {
+                  
+            echo '<td>';
+            echo $row;
+            echo '</td>';
+                  
+            }
+
+         echo '</tr>';
+
+         }
+
+    echo '</table>';
+
+    }
+}
+
+
+ echo '<h2>Select all records from Accounts Table  </h2>';
+ $records = accounts::create();
+ $result = $records->findAll();
+ table::createTable($result);  
+ echo '<br>';
        
 
 
