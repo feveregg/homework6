@@ -79,6 +79,15 @@ class accounts extends collection {
 }
 
 
+class todos extends collection {
+
+    protected static $modelName='todos';
+
+}
+
+
+
+
 class table {
 
     static  function createTable($result) {
@@ -107,13 +116,18 @@ class table {
 }
 
 
- echo '<h2>Select all records from Accounts Table  </h2>';
+ echo '<h2>Select all from Accounts Table  </h2>';
  $records = accounts::create();
  $result = $records->findAll();
  table::createTable($result);  
  echo '<br>';
        
 
+ echo '<h2>Select all from Todos Table </h2>';
+ $records = todos::create();
+ $result= $records->findAll(); 
+ table::createTable($result);        
+ echo '<br>';
 
          
 
