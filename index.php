@@ -157,6 +157,22 @@ class model {
 
 
 
+class todo extends model {
+
+    public $owneremail = 'owneremail';
+    public $ownerid = 'ownerid';
+    public $createddate = 'createddate';
+    public $duedate = 'duedate';
+    public $message = 'message';
+    public $isdone = 'isdone';
+    static $tableName = 'todos';
+    static $id = '5';
+    static $data = array('123@gmail.com','123','2099-01-01','20-12-31','Yes','99');
+    static $columnUpdate = 'isdone';
+    static $newInfo ='1';
+
+}
+
 
 class table {
 
@@ -209,5 +225,22 @@ class table {
  echo '<h2>Select ID=2  from Todos Table<h2>';
  $result= $records->findOne(2);
  table::createTable($result);        
+
+ echo '<h2>Insert new row id=5 </h2>';   
+ $obj = new todo;
+ $obj->save();
+ $records = todos::create();
+ $result= $records->findAll();
+ table::createTable($result);
+ echo '<br>';
+
+ echo '<h2>Delete ID=5 from Todos Table </h2>';
+ $obj = new todo;
+ $obj->delete(5);            
+ $records = todos::create();
+ $result= $records->findAll();
+ table::createTable($result);
+
+ 
 
 ?>
