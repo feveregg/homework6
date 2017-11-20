@@ -153,5 +153,8 @@ class table {
  echo '<br>';
 
          
+ echo '<h2>Select ID=2  from Todos Table<h2>';
+ $result= $records->findOne(2);
+ table::createTable($result);        
 
 ?>
