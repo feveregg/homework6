@@ -103,6 +103,59 @@ class todos extends collection {
 }
 
 
+class model {
+
+    static $columnString;
+    static $valueString;
+       
+    public function save() {
+             
+        if (static::$id == '') {
+
+             $db=dbConn::getConnection();
+             $array = get_object_vars($this);
+             static::$columnString = implode(', ', $array);
+             static::$valueString = implode(', ',array_fill(0,count($array),'?'));
+             $sql = $this->insert();
+             $stmt=$db->prepare($sql);
+             $stmt->execute(static::$data);
+
+        } else  {
+               
+             $db=dbConn::getConnection();
+             $array = get_object_vars($this);
+             $sql = $this->update();
+             $stmt=$db->prepare($sql);
+             $stmt->execute();
+        
+         }
+
+    }
+
+    private function insert() {
+               
+         $sql = "INSERT INTO ".static::$tableName." (". static::$columnString . ") Values(". static::$valueString . ") ";
+         return $sql;
+      
+    }
+ 
+    private function update() {
+         $sql = "UPDATE ".static::$tableName. " SET ".static::$columnUpdate."='".static::$newInfo."' WHERE id=".static::$id;
+         return $sql;
+          
+    }
+                                       
+    public function delete() {
+                
+         $db=dbConn::getConnection();
+         $sql = 'Delete From '.static::$tableName.' WHERE id='.static::$id;
+         $stmt=$db->prepare($sql);
+         $stmt->execute();
+
+    }
+}
+
+
 
 
 class table {
