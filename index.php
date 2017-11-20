@@ -174,6 +174,25 @@ class todo extends model {
 }
 
 
+
+class account extends model {
+
+   public $email = 'email';
+   public $fname = 'fname';
+   public $lname = 'lname';
+   public $phone =  'phone';
+   public $birthday = 'birthday';
+   public $gender= 'gender';
+   public $password = 'password';
+   static $tableName = 'accounts';
+   static $id = '19';
+   static $data = array('wk45@njit.edu','Weichen','Kao','123','1994-03-30','Male','Kevin');
+   static $columnUpdate = 'lname';
+   static $newInfo ='Jacobs';
+
+}
+
+
 class table {
 
     static  function createTable($result) {
@@ -212,6 +231,15 @@ class table {
  echo '<h2>Select ID=10 from Accounts Table</h2>';
  $result= $records->findOne(10);
  table::createTable($result); 
+ echo '<br>';
+
+
+ echo '<h2>Update id=14 to my information in Accounts Table</h2>';
+ $obj = new account;
+ $obj->save();
+ $records = accounts::create();
+ $result = $records->findAll();
+ table::createTable($result);
  echo '<br>';
 
 
